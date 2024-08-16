@@ -22,7 +22,7 @@ class Auth
 
   public static function hash($rawPassword)
   {
-    return password_hash($rawPassword, PASSWORD_BCRYPT, array("cost" => 10));
+    return password_hash($rawPassword, PASSWORD_BCRYPT, array("cost" => 10));   
   }
 
   public static function verify($password, $hash)
@@ -46,13 +46,13 @@ class Auth
     $conn = new PDO("mysql:host=" . Env::$servername . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $conn->prepare("SELECT * FROM tbl_staffs_a189629_pt2 where fld_staff_num=:id LIMIT 1");
+    $stmt = $conn->prepare("SELECT * FROM tbl_staffs where fld_staff_num=:id LIMIT 1");
     $stmt->bindParam(':id', $id, PDO::PARAM_STR);
 
     $stmt->execute();
     $result = $stmt->fetch();
 
-    if(!$result || !Auth::verify($password, $result["fld_password"])) {                          //!Auth::verify($password, $result["fld_password"])
+    if(!$result || !Auth::verify($password, $result["fld_staff_password"])) {                          //!Auth::verify($password, $result["fld_staff_password"])
       $authError = "Invalid ID or Password";
       return;
     }

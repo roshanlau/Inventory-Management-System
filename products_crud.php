@@ -1,9 +1,9 @@
 <?php
- 
+include_once 'env.php';
 include_once 'database.php';
-require_once('auth.php');
+require_once 'auth.php';
  
-$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+$conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  
 //Create
@@ -13,7 +13,7 @@ if (isset($_POST['create'])) {
     } else {
         try {
     
-            $stmt = $conn->prepare("INSERT INTO tbl_products_a189629_pt2(fld_product_id,
+            $stmt = $conn->prepare("INSERT INTO tbl_products(fld_product_id,
                 fld_product_name, fld_product_price, fld_product_type, fld_product_brand,
                 fld_product_rating, fld_product_description, fld_product_image) VALUES(:pid, :name, :price, :type, :brand, :rating, :description, '')");    
         
@@ -50,7 +50,7 @@ if (isset($_POST['update'])) {
     } else {
         try {
     
-            $stmt = $conn->prepare("UPDATE tbl_products_a189629_pt2 SET fld_product_id = :pid,
+            $stmt = $conn->prepare("UPDATE tbl_products SET fld_product_id = :pid,
                 fld_product_name = :name, fld_product_price = :price, fld_product_type = :type, 
                 fld_product_brand = :brand, fld_product_rating = :rating, 
                 fld_product_description = :description
@@ -93,7 +93,7 @@ if (isset($_GET['delete'])) {
     } else {
         try {
         
-            $stmt = $conn->prepare("DELETE FROM tbl_products_a189629_pt2 WHERE fld_product_id = :pid");
+            $stmt = $conn->prepare("DELETE FROM tbl_products WHERE fld_product_id = :pid");
             
             $stmt->bindParam(':pid', $pid, PDO::PARAM_STR);
             
@@ -118,7 +118,7 @@ if (isset($_GET['edit'])) {
     } else {
         try {
         
-            $stmt = $conn->prepare("SELECT * FROM tbl_products_a189629_pt2 WHERE fld_product_id = :pid");
+            $stmt = $conn->prepare("SELECT * FROM tbl_products WHERE fld_product_id = :pid");
             
             $stmt->bindParam(':pid', $pid, PDO::PARAM_STR);
             

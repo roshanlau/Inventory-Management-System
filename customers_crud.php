@@ -2,7 +2,7 @@
  
 include_once 'database.php';
  
-$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+$conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  
 //Create
@@ -12,7 +12,7 @@ if (isset($_POST['create'])) {
   } else {
     try {
   
-      $stmt = $conn->prepare("INSERT INTO tbl_customers_a189629_pt2(fld_customer_num, fld_customer_fname,
+      $stmt = $conn->prepare("INSERT INTO tbl_customers(fld_customer_num, fld_customer_fname,
         fld_customer_lname, fld_customer_gender, fld_customer_phone) VALUES(:cid, :fname, :lname,
         :gender, :phone)");
     
@@ -45,7 +45,7 @@ if (isset($_POST['update'])) {
   } else { 
     try {
   
-      $stmt = $conn->prepare("UPDATE tbl_customers_a189629_pt2 SET fld_customer_num = :cid,
+      $stmt = $conn->prepare("UPDATE tbl_customers SET fld_customer_num = :cid,
         fld_customer_fname = :fname, fld_customer_lname = :lname,
         fld_customer_gender = :gender, fld_customer_phone = :phone
         WHERE fld_customer_num = :oldcid");
@@ -83,7 +83,7 @@ if (isset($_GET['delete'])) {
   } else {
     try {
   
-      $stmt = $conn->prepare("DELETE FROM tbl_customers_a189629_pt2 WHERE fld_customer_num = :cid");
+      $stmt = $conn->prepare("DELETE FROM tbl_customers WHERE fld_customer_num = :cid");
     
       $stmt->bindParam(':cid', $cid, PDO::PARAM_STR);
         
@@ -108,7 +108,7 @@ if (isset($_GET['edit'])) {
   } else {
     try {
   
-      $stmt = $conn->prepare("SELECT * FROM tbl_customers_a189629_pt2 WHERE fld_customer_num = :cid");
+      $stmt = $conn->prepare("SELECT * FROM tbl_customers WHERE fld_customer_num = :cid");
     
       $stmt->bindParam(':cid', $cid, PDO::PARAM_STR);
         

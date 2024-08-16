@@ -5,6 +5,7 @@
         header("Location: login.php?redirect=customers.php&error=$authError");
     }
     include_once 'customers_crud.php';
+    include_once 'env.php';    
 ?>
 
 <!DOCTYPE html>
@@ -141,9 +142,9 @@
                     $page = 1;
                 $start_from = ($page-1) * $per_page;
                 try {
-                    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                    $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $stmt = $conn->prepare("SELECT * FROM tbl_customers_a189629_pt2 LIMIT $start_from, $per_page");
+                    $stmt = $conn->prepare("SELECT * FROM tbl_customers LIMIT $start_from, $per_page");
                     $stmt->execute();
                     $result = $stmt->fetchAll();
                 }
@@ -176,9 +177,9 @@
                 <ul class="pagination">
                 <?php
                 try {
-                    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                    $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $stmt = $conn->prepare("SELECT * FROM tbl_customers_a189629_pt2");
+                    $stmt = $conn->prepare("SELECT * FROM tbl_customers");
                     $stmt->execute();
                     $result = $stmt->fetchAll();
                     $total_records = count($result);

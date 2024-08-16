@@ -6,7 +6,7 @@
     }
 
     include_once 'products_crud.php';
-
+    include_once 'env.php';
 ?>
 
 <!DOCTYPE html>
@@ -193,9 +193,9 @@
                             // Read
                             
                             try {
-                                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                                $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                $stmt = $conn->prepare("SELECT * FROM tbl_products_a189629_pt2");
+                                $stmt = $conn->prepare("SELECT * FROM tbl_products");
                                 $stmt->execute();
                                 $result = $stmt->fetchAll();
                             

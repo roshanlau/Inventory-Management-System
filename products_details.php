@@ -1,5 +1,5 @@
-<?php
-  include_once('env.php');
+tbl_products_a189629_pt2<?php
+  include_once 'env.php';
   require_once 'auth.php';
   if (!Auth::is_authed()) {
     $authError = "You are not authorized to view this page. Please log in first. ";
@@ -30,9 +30,9 @@
 
     <?php
     try {
-      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("SELECT * FROM tbl_products_a189629_pt2 WHERE fld_product_id = :pid");
+        $stmt = $conn->prepare("SELECT * FROM tbl_products WHERE fld_product_id = :pid");
       $stmt->bindParam(':pid', $pid, PDO::PARAM_STR);
       $pid = $_GET['pid'];
       $stmt->execute();

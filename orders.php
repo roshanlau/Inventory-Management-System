@@ -5,6 +5,7 @@
         header("Location: login.php?redirect=orders.php&error=$authError");
       }
     include_once 'orders_crud.php';
+    require_once 'env.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,9 +78,9 @@
                             <select name="sid" class="form-control" id="staff" required>
                                 <?php
                                 try {
-                                    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                                    $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                    $stmt = $conn->prepare("SELECT * FROM tbl_staffs_a189629_pt2");
+                                    $stmt = $conn->prepare("SELECT * FROM tbl_staffs");
                                     $stmt->execute();
                                     $result = $stmt->fetchAll();
                                 }
@@ -106,9 +107,9 @@
                             <select name="cid" class="form-control" id="customer" required>
                                 <?php
                                 try {
-                                    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                                    $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                    $stmt = $conn->prepare("SELECT * FROM tbl_customers_a189629_pt2");
+                                    $stmt = $conn->prepare("SELECT * FROM tbl_customers");
                                     $stmt->execute();
                                     $result = $stmt->fetchAll();
                                 }
@@ -165,11 +166,11 @@
                     $page = 1;
                 $start_from = ($page-1) * $per_page;
                 try {
-                    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                    $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "SELECT * FROM tbl_orders_a189629, tbl_staffs_a189629_pt2, tbl_customers_a189629_pt2 WHERE ";
-                    $sql = $sql."tbl_orders_a189629.fld_staff_num = tbl_staffs_a189629_pt2.fld_staff_num and ";
-                    $sql = $sql."tbl_orders_a189629.fld_customer_num = tbl_customers_a189629_pt2.fld_customer_num LIMIT $start_from, $per_page";
+                    $sql = "SELECT * FROM tbl_orders, tbl_staffs, tbl_customers WHERE ";
+                    $sql = $sql."tbl_orders.fld_staff_num = tbl_staffs.fld_staff_num and ";
+                    $sql = $sql."tbl_orders.fld_customer_num = tbl_customers.fld_customer_num LIMIT $start_from, $per_page";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $result = $stmt->fetchAll();
@@ -204,9 +205,9 @@
                 <ul class="pagination">
                 <?php
                 try {
-                    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                    $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $stmt = $conn->prepare("SELECT * FROM tbl_orders_a189629");
+                    $stmt = $conn->prepare("SELECT * FROM tbl_orders");
                     $stmt->execute();
                     $result = $stmt->fetchAll();
                     $total_records = count($result);

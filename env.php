@@ -7,10 +7,11 @@ if (count(get_included_files()) == 1)
 class Env
 {
     public static $salt = "wTn4qZdJ3e"; //need change
-    public static $servername = "lrgs.ftsm.ukm.my";
-    public static $username = "a189629";
-    public static $password = "largebluehamster";
-    public static $dbname = "a189629";
+    public static $servername = "localhost";
+    public static $username = "root";
+    public static $password = "";
+    public static $dbname = "inventory_management_db";
+    public static $port = "3306";
 
 }
 

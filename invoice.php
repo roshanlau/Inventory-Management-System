@@ -1,17 +1,18 @@
 <?php
     include_once 'database.php';
+    include_once 'auth.php';
 ?>
 
 <?php
   try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $conn->prepare("SELECT * FROM tbl_orders_a189629, tbl_staffs_a189629_pt2,
-      tbl_customers_a189629_pt2, tbl_orders_details_a189629 WHERE
-      tbl_orders_a189629.fld_staff_num = tbl_staffs_a189629_pt2.fld_staff_num AND
-      tbl_orders_a189629.fld_customer_num = tbl_customers_a189629_pt2 .fld_customer_num AND
-      tbl_orders_a189629.fld_order_num = tbl_orders_details_a189629.fld_order_num AND
-      tbl_orders_a189629.fld_order_num = :oid");
+    $stmt = $conn->prepare("SELECT * FROM tbl_orders, tbl_staffs,
+      tbl_customers, tbl_orders_details WHERE
+      tbl_orders.fld_staff_num = tbl_staffs.fld_staff_num AND
+      tbl_orders.fld_customer_num = tbl_customers.fld_customer_num AND
+      tbl_orders.fld_order_num = tbl_orders_details.fld_order_num AND
+      tbl_orders.fld_order_num = :oid");
     $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
     $oid = $_GET['oid'];
     $stmt->execute();
@@ -101,9 +102,9 @@
       try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $stmt = $conn->prepare("SELECT * FROM tbl_orders_details_a189629,
-            tbl_products_a189629_pt2 where 
-            tbl_orders_details_a189629.fld_product_num = tbl_products_a189629_pt2.fld_product_id AND
+          $stmt = $conn->prepare("SELECT * FROM tbl_orders_details,
+            tbl_products where 
+            tbl_orders_details.fld_product_num = tbl_products.fld_product_id AND
             fld_order_num = :oid");
         $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
           $oid = $_GET['oid'];

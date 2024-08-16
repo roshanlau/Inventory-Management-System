@@ -1,5 +1,6 @@
 <?php
     include_once 'staffs_crud.php';
+    require_once 'env.php';
     require_once 'auth.php';
     if (!Auth::is_authed()) {
         $authError = "You are not authorized to view this page. Please log in first. ";
@@ -170,9 +171,9 @@
                         $page = 1;
                     $start_from = ($page-1) * $per_page;
                     try {
-                        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                        $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $stmt = $conn->prepare("SELECT * FROM tbl_staffs_a189629_pt2 LIMIT $start_from, $per_page");
+                        $stmt = $conn->prepare("SELECT * FROM tbl_staffs LIMIT $start_from, $per_page");
                         $stmt->execute();
                         $result = $stmt->fetchAll();
                     }
@@ -206,9 +207,9 @@
                     <ul class="pagination">
                     <?php
                     try {
-                        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                        $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $stmt = $conn->prepare("SELECT * FROM tbl_staffs_a189629_pt2");
+                        $stmt = $conn->prepare("SELECT * FROM tbl_staffs");
                         $stmt->execute();
                         $result = $stmt->fetchAll();
                         $total_records = count($result);

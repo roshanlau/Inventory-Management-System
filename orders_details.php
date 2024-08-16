@@ -1,5 +1,6 @@
 <?php
   include_once 'orders_details_crud.php';
+  include_once 'env.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,12 +26,12 @@
 
     <?php
     try {
-      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+      $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("SELECT * FROM tbl_orders_a189629, tbl_staffs_a189629_pt2,
-          tbl_customers_a189629_pt2 WHERE
-          tbl_orders_a189629.fld_staff_num = tbl_staffs_a189629_pt2.fld_staff_num AND
-          tbl_orders_a189629.fld_customer_num = tbl_customers_a189629_pt2.fld_customer_num AND
+        $stmt = $conn->prepare("SELECT * FROM tbl_orders, tbl_staffs,
+          tbl_customers WHERE
+          tbl_orders.fld_staff_num = tbl_staffs.fld_staff_num AND
+          tbl_orders.fld_customer_num = tbl_customers.fld_customer_num AND
           fld_order_num = :oid");
       $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
         $oid = $_GET['oid'];
@@ -85,9 +86,9 @@
               <option value="">Please select</option>
               <?php
               try {
-                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                  $stmt = $conn->prepare("SELECT * FROM tbl_products_a189629_pt2");
+                  $stmt = $conn->prepare("SELECT * FROM tbl_products");
                 $stmt->execute();
                 $result = $stmt->fetchAll();
               }
@@ -136,11 +137,11 @@
           <tr>
           <?php
           try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-              $stmt = $conn->prepare("SELECT * FROM tbl_orders_details_a189629,
-                tbl_products_a189629_pt2 WHERE
-                tbl_orders_details_a189629.fld_product_num = tbl_products_a189629_pt2.fld_product_id AND
+              $stmt = $conn->prepare("SELECT * FROM tbl_orders_details,
+                tbl_products WHERE
+                tbl_orders_details.fld_product_num = tbl_products.fld_product_id AND
               fld_order_num = :oid");
               $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
               $oid = $_GET['oid'];

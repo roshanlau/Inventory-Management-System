@@ -1,8 +1,9 @@
 <?php
  
  include_once 'database.php';
+ require_once 'env.php';
   
- $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+ $conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   
  //Create
@@ -10,7 +11,7 @@
   
    try {
   
-     $stmt = $conn->prepare("INSERT INTO tbl_orders_a189629(fld_order_num, fld_staff_num,
+     $stmt = $conn->prepare("INSERT INTO tbl_orders(fld_order_num, fld_staff_num,
        fld_customer_num) VALUES(:oid, :sid, :cid)");
     
      $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
@@ -37,7 +38,7 @@
   } else { 
     try {
     
-      $stmt = $conn->prepare("UPDATE tbl_orders_a189629 SET fld_staff_num = :sid,
+      $stmt = $conn->prepare("UPDATE tbl_orders SET fld_staff_num = :sid,
         fld_customer_num = :cid WHERE fld_order_num = :oid");
       
       $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
@@ -67,7 +68,7 @@
     } else {
     try {
     
-      $stmt = $conn->prepare("DELETE FROM tbl_orders_a189629 WHERE fld_order_num = :oid");
+      $stmt = $conn->prepare("DELETE FROM tbl_orders WHERE fld_order_num = :oid");
       
       $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
           
@@ -92,7 +93,7 @@
     } else {
       try {
     
-      $stmt = $conn->prepare("SELECT * FROM tbl_orders_a189629 WHERE fld_order_num = :oid");
+      $stmt = $conn->prepare("SELECT * FROM tbl_orders WHERE fld_order_num = :oid");
       
       $stmt->bindParam(':oid', $oid, PDO::PARAM_STR);
           

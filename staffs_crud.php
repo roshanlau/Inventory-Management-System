@@ -4,7 +4,7 @@ include_once 'database.php';
 require_once 'env.php';
 require_once 'auth.php';
  
-$conn = new PDO("mysql:host=" . Env::$servername . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
+$conn = new PDO("mysql:host=" . Env::$servername . ";port=". Env::$port . ";dbname=" . Env::$dbname, Env::$username, Env::$password);
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  
 //Create
@@ -14,8 +14,8 @@ if (isset($_POST['create'])) {
   } else {
     try {
   
-      $stmt = $conn->prepare("INSERT INTO tbl_staffs_a189629_pt2(fld_staff_num, fld_staff_fname, fld_staff_lname,
-        fld_staff_gender, fld_staff_phone, fld_staff_email, fld_password, fld_access_level) VALUES(:sid, :fname, :lname, :gender,
+      $stmt = $conn->prepare("INSERT INTO tbl_staffs(fld_staff_num, fld_staff_fname, fld_staff_lname,
+        fld_staff_gender, fld_staff_phone, fld_staff_email, fld_staff_password, fld_access_level) VALUES(:sid, :fname, :lname, :gender,
         :phone, :email, :passwordHash, :accessLevel)");
     
       $stmt->bindParam(':sid', $sid, PDO::PARAM_STR);
@@ -53,11 +53,11 @@ if (isset($_POST['update'])) {
   } else {
     try {
   
-      $stmt = $conn->prepare("UPDATE tbl_staffs_a189629_pt2 SET
+      $stmt = $conn->prepare("UPDATE tbl_staffs SET
         fld_staff_num = :sid, fld_staff_fname = :fname,
         fld_staff_lname = :lname, fld_staff_gender = :gender,
         fld_staff_phone = :phone, fld_staff_email = :email,
-        fld_password = IFNULL(:passwordHash, fld_password),
+        fld_staff_password = IFNULL(:passwordHash, fld_staff_password),
         fld_access_level = :accessLevel
         WHERE fld_staff_num = :oldsid");
     
@@ -100,7 +100,7 @@ if (isset($_GET['delete'])) {
   } else {
     try {
   
-      $stmt = $conn->prepare("DELETE FROM tbl_staffs_a189629_pt2 where fld_staff_num = :sid");
+      $stmt = $conn->prepare("DELETE FROM tbl_staffs where fld_staff_num = :sid");
     
       $stmt->bindParam(':sid', $sid, PDO::PARAM_STR);
         
@@ -125,7 +125,7 @@ if (isset($_GET['edit'])) {
   } else { 
     try {
   
-      $stmt = $conn->prepare("SELECT * FROM tbl_staffs_a189629_pt2 where fld_staff_num = :sid");
+      $stmt = $conn->prepare("SELECT * FROM tbl_staffs where fld_staff_num = :sid");
     
       $stmt->bindParam(':sid', $sid, PDO::PARAM_STR);
         
